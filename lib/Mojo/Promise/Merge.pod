@@ -1,10 +1,6 @@
-# Mojo::Promise::Merge
+=head1 Mojo::Promise::Merge - merge promise responses
 
-## NAME
-
-Mojo::Promise::Merge - merge promise responses
-
-## SYNOPSIS
+=head2 SYNOPSIS
 
     use strict;
     use warnings;
@@ -23,27 +19,28 @@ Mojo::Promise::Merge - merge promise responses
     my $revisions = 'https://en.wikipedia.org/w/api.php?action=query&titles=Albert+Einstein%7CNiels+Bohr&prop=revisions&rvslots=main&rvprop=timestamp&format=json';
 
     Mojo::Promise->all(
-                   $ua->get_p($extracts),
-                   $ua->get_p($pageprops),
-                   $ua->get_p($revisions),
-                   )
+        	   $ua->get_p($extracts),
+        	   $ua->get_p($pageprops),
+        	   $ua->get_p($revisions),
+        	   )
         ->then(sub {
                print dumper Mojo::Promise::Merge::merge(@_);
                Mojo::IOLoop->stop;
            })
         ->catch(sub {
-                print STDERR @_;
+        	print STDERR @_;
            });
 
     Mojo::IOLoop->start;
 
-## DESCRIPTION
+
+=head2 DESCRIPTION
 
 Mojo::Promise::Merge merges the json responses of multiple requests via Hash::Merge's merge function.
 
-## FUNCTIONS
+=head2 FUNCTIONS
 
-### merge
+=head3 merge
 
     Mojo::Promise::Merge::merge(@_);
 
@@ -57,11 +54,13 @@ Alternatively it can be passed a reference to a string that will be used by JSON
 
 Differently from Hash::Merge, Mojo::Promise::Merge can merge more than two hashes.
 
-## Differences from JSON::Path
 
-### Forcing results to arrayref
+=head2 Differences from JSON::Path
 
-The presence of a `[*]` selector on the path selector will force the result to an arrayref so that
+
+=head3 Forcing results to arrayref
+
+The presence of a C<[*]> selector on the path selector will force the result to an arrayref so that
 
     my $json = $tx->res->json('$.entities[*]');
 
@@ -70,21 +69,32 @@ is equivalent to
     my $json = $tx->res->json;
     $json = JSON::Path->new($json)->values('$.entities[*]');
 
-This is not true if using a `*` (i.e.: without brackets).
+This is not true if using a C<*> (i.e.: without brackets).
 
-## SEE ALSO
 
-- Hash::Merge
-- Mojo::Promise
-- JSON::Path
+=head2 SEE ALSO
 
-## AUTHORS
+=over
+
+=item Hash::Merge
+
+
+=item Mojo::Promise
+
+
+=item JSON::Path
+
+
+=back
+
+
+=head2 AUTHORS
 
 Simone Cesano
 
-## COPYRIGHT AND LICENSE
+
+=head2 COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2021 by Simone Cesano.
 
 This is free software; you can redistribute it and/or modify it under the same terms as the Perl 5 programming language system itself.
-
